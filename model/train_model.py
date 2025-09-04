@@ -1,63 +1,75 @@
+import tensorflow as tf
+from keras import layers, models
+import pathlib
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # ----- PARAMETERS -----
 IMG_SIZE = 64
-NUM_CLASSES = 4  # circle, square, rectangle, triangle
+BATCH_SIZE = 8
+NUM_CLASSES = 4
+EPOCHS = 10
+
+# ----- LOAD DATASET -----
+data_dir = pathlib.Path("../data/train")
+
+train_ds = tf.keras.utils.image_dataset_from_directory(
+    data_dir,
+    labels='inferred',
+    label_mode='categorical',
+    color_mode='grayscale',
+    batch_size=BATCH_SIZE,
+    image_size=(IMG_SIZE, IMG_SIZE),
+    validation_split=0.2,
+    subset="training",
+    seed=123
+)
+
+val_ds = tf.keras.utils.image_dataset_from_directory(
+    data_dir,
+    labels='inferred',
+    label_mode='categorical',
+    color_mode='grayscale',
+    batch_size=BATCH_SIZE,
+    image_size=(IMG_SIZE, IMG_SIZE),
+    validation_split=0.2,
+    subset="validation",
+    seed=123
+)
+
+# Prefetching for performance
+AUTOTUNE = tf.data.AUTOTUNE
+train_ds = train_ds.cache().shuffle(100).prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 # ----- BUILD THE MODEL -----
-def build_model():
-    model = Sequential([
-        Conv2D(32, (3,3), activation='relu', input_shape=(IMG_SIZE, IMG_SIZE, 1)),
-        MaxPooling2D(2,2),
+model = models.Sequential([
+    layers.Rescaling(1./255, input_shape=(IMG_SIZE, IMG_SIZE, 1)),
+    layers.Conv2D(32, (3,3), activation='relu'),
+    layers.MaxPooling2D(2,2),
 
-        Conv2D(64, (3,3), activation='relu'),
-        MaxPooling2D(2,2),
+    layers.Conv2D(64, (3,3), activation='relu'),
+    layers.MaxPooling2D(2,2),
 
-        Flatten(),
-        Dense(64, activation='relu'),
-        Dense(NUM_CLASSES, activation='softmax')
-    ])
+    layers.Flatten(),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(NUM_CLASSES, activation='softmax')
+])
 
-    model.compile(optimizer='adam',
-                  loss='categorical_crossentropy',
-                  metrics=['accuracy'])
-    return model
-
-# ----- PREPARE TRAINING DATA -----
-datagen = ImageDataGenerator(rescale=1./255, validation_split=0.2)
-
-train_generator = datagen.flow_from_directory(
-    '/Users/quentingeoffroy/Desktop/shape_notepad/data/train',
-    target_size=(IMG_SIZE, IMG_SIZE),
-    color_mode='grayscale',
-    batch_size=16,
-    class_mode='categorical',
-    subset='training',
-    shuffle=True
+model.compile(
+    optimizer='adam',
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
 )
 
-val_generator = datagen.flow_from_directory(
-    '/Users/quentingeoffroy/Desktop/shape_notepad/data/train',
-    target_size=(IMG_SIZE, IMG_SIZE),
-    color_mode='grayscale',
-    batch_size=16,
-    class_mode='categorical',
-    subset='validation'
-)
-
-# ----- TRAIN THE MODEL -----
-model = build_model()
 model.summary()
 
+# ----- TRAIN -----
 model.fit(
-    train_generator,
-    validation_data=val_generator,
-    epochs=10
+    train_ds,
+    validation_data=val_ds,
+    epochs=EPOCHS
 )
 
-# ----- SAVE THE MODEL -----
-model.save("model/shape_model.h5")
-print("✅ Model saved as model/shape_model.h5")
+# ----- SAVE -----
+model.save("../model/shape_model.h5")
+print("✅ Model saved to ../model/shape_model.h5")
