@@ -22,3 +22,12 @@ shapeAI is a machine learning tool that generates a large synthetic dataset of b
 3. Training: Models trained on the synthetic dataset with stratified splits and regularization to prevent overfitting.
 
 4. Evaluation: High test accuracy on both synthetic validation sets and live user-drawn inputs.
+
+
+**WIP**
+
+1. Extend dataset and models to include complex shapes or alphanumeric characters
+
+2. Explore transfer learning from shape classification to handwriting recognition
+
+3. Deploy as a lightweight webapp for educational and creative use cases
