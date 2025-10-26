@@ -27,7 +27,9 @@ gunicorn -b 0.0.0.0:3000 app:app
 
 ## Model Training 💪
 OpenCV is used to synthetically generate training data in ```training/generate_shapes.py```.
-Data is stored in ```training/data``` - modify the folder to add training cases.
+
+Data is stored in ```training/data``` - add and modify the folder to add training cases.
+
 Run ```training/train.py``` to train the model - exports to ```shape_model.keras```.
 
 ## Technical Overview 👨‍💻
