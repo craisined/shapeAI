@@ -1,33 +1,50 @@
 # shapeAI
 
-shapeAI is a machine learning tool that generates a large synthetic dataset of basic geometric shapes and leverages this data to train predictive models. The tool enables users to draw shapes (circle, triangle, square, rectangle) on an interactive notepad, and the model classifies the drawing with high accuracy.
+_Forked from [@quentinbkk's shape ai](https://github.com/quentinbkk/shapeAI)_
 
+Shape AI is a web app utilizing a classifier model to identify user drawn geometric shapes. Currently, the model can identify drawn squares, rectangles, circles, and triangles.
 
-**Key Features**
+**[Try it live ✏️](quentinai.craisin.tech)**
 
-1. Synthetic Data Generation: Automatically creates a scalable library of drawn shapes with controlled noise, rotation, and size variations to ensure robust training.
+## Running the App
+### Docker 🐋
+```bash
+git clone https://github.com/craisined/shapeAI
+cd shapeAI
+docker build -t shapeAI .
+docker run -p 3000:3000 shapeAI
+```
+### Manually 🖥️
+```bash
+git clone https://github.com/craisined/shapeAI
+cd shapeAI
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+cd app
+gunicorn -b 0.0.0.0:3000 app:app
+```
 
-2. ML-Powered Prediction: Learns from the generated dataset and predicts user-drawn shapes on a notepad interface.
+## Model Training 💪
+OpenCV is used to synthetically generate training data in ```training/generate_shapes.py```.
+Data is stored in ```training/data``` - modify the folder to add training cases.
+Run ```training/train.py``` to train the model - exports to ```shape_model.keras```.
 
-3. High Accuracy: Achieves strong generalization performance across varying drawing styles and distortions.
-
-4. Broad Applications: Can be extended to handwriting recognition, educational tools, HCI (human–computer interaction), or creative AI applications.
-
-**Technical Overview**
-
-1. Data Generation: Able to procedurally draw thousands of synthetic samples of circles, triangles, squares, and rectangles.
-
-2. Preprocessing Normalizes drawings, applies augmentation (translation, rotation, scaling), and encodes inputs into pixel-based or vectorized representations.
-
-3. Training: Models trained on the synthetic dataset with stratified splits and regularization to prevent overfitting.
-
-4. Evaluation: High test accuracy on both synthetic validation sets and live user-drawn inputs.
-
-
-**WIP**
-
-1. Extend dataset and models to include complex shapes or alphanumeric characters
-
-2. Explore transfer learning from shape classification to handwriting recognition
-
-3. Deploy as a lightweight webapp for educational and creative use cases
+## Technical Overview 👨‍💻
+### Abilities
+1. High training accuracy - model consistently trains with accuracy > 99%
+2. Fast speed - model has sub 50ms response times
+3. Synthetic data and preproccessing - generates training data and sends user drawing from website to language model
+### Frameworks
+1. Model built with Tensorflow and Keras
+2. Image manipulation built using OpenCV and Pillow
+3. Backend built using Flask
+4. Frontend built using vanilla HTML, CSS, JS
+### Changes from original fork
+1. Web UI and Flask backend added
+2. Synthetic training data altered to produce a more human friendly model
+### WIP
+1. Low accuracy on certain cases - further improve synthetic shape generation
+2. Add confidence for classification - do not display a result if confidence is low
+3. Imporve mobile UI to further prevent scroll while drawing
+4. Expand dataset to various alphanumerical characters
