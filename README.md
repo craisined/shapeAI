@@ -6,7 +6,7 @@ Shape AI is a web app utilizing a classifier model to identify user drawn geomet
 
 **[Try it live ✏️](quentinai.craisin.tech)**
 
-## Running the App
+## Running the App 🏃
 ### Docker 🐋
 ```bash
 git clone https://github.com/craisined/shapeAI
