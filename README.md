@@ -20,8 +20,8 @@ git clone https://github.com/craisined/shapeAI
 cd shapeAI
 python3 -m venv env
 source env/bin/activate
-pip install -r requirements.txt
 cd app
+pip install -r requirements.txt
 gunicorn -b 0.0.0.0:3000 app:app
 ```
 
