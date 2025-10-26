@@ -4,7 +4,7 @@ _Forked from [@quentinbkk's shape ai](https://github.com/quentinbkk/shapeAI)_
 
 Shape AI is a web app utilizing a classifier model to identify user drawn geometric shapes. Currently, the model can identify drawn squares, rectangles, circles, and triangles.
 
-**[Try it live ✏️](quentinai.craisin.tech)**
+**[Try it live ✏️](https://quentinai.craisin.tech)**
 
 ## Running the App 🏃
 ### Docker 🐋
