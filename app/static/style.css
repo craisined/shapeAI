@@ -1,0 +1,60 @@
+html, body{
+    margin: 0px;
+    font-family: "Lexend", sans-serif;
+    font-weight: 300;
+    overscroll-behavior-y: contain;
+    overflow-x: hidden;
+}
+#textArea{
+    background: #f8f8ff;
+    width: 40vw;
+    height: 100vh;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#drawingArea{
+    width: 60vw;
+    float: right;
+}
+
+#canvas{
+    border-style: solid;
+    border-width: 4px;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    margin-top: calc(50vh - 20vw);
+    width:40vw;
+    height:40vw;
+}
+#quentinImg{
+    display: inline-block;
+    height: 1em;
+    width: auto;
+    border-radius: 30%;
+}
+h1{
+    font-size: 64px;
+}
+h2{
+    font-size: 48px;
+}
+p{
+    font-size: 24px;
+}
+@media only screen and (max-width:1000px)  {
+    #textArea{
+        width: 100vw;
+        height: 20vh;
+    }
+    #drawingArea{
+        width: 100vw;
+        height: 80vh;
+    }
+    #canvas{
+        width: 80vw;
+        height: 80vw;
+        margin-top: calc(40vh - 40vw);
+    }
+}
